@@ -1,0 +1,4 @@
+Questions: 
+
+1. Do I need start and end CS for OS_Kill?
+2. Can we use Peterson's algorithm instead of EI DisableInterrupts
