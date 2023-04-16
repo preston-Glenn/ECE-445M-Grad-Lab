@@ -11,11 +11,14 @@ To that end we will be using a RaspberryPi since it has an MMU. The first part o
 # Steps.
 1. Get hello world bootup working RP.
 2. Implement .s code that manages bootup (This may be part of step 1.)
+3. Get UART/ print statements working
 3. Port over OS to RP.
 - get priority scheduler working.
 **************************
-4. Design VM management
-5. Start implementation
+4. Design VM management with thread(consider with process)
+5. Start implementation (for threads)
 **************************
 6. Add 2ndary bootloader to code
 7. Update VMM to support proccesses.
+
+8 IMPORTANT ** RESEARCH PAPERS about it.
