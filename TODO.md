@@ -22,3 +22,14 @@ To that end we will be using a RaspberryPi since it has an MMU. The first part o
 7. Update VMM to support proccesses.
 
 8 IMPORTANT ** RESEARCH PAPERS about it.
+
+
+
+
+
+
+
+
+1. Get serial connection working
+2. Get systick and pensv working
+3. Get add thread working

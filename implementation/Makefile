@@ -9,7 +9,7 @@ boot.o: boot.S
 	$(GCCPATH)/aarch64-none-elf-gcc $(GCCFLAGS) -c boot.S -o boot.o
 
 %.o: %.c
-	$(GCCPATH)/aarch64-none-elf-gcc $(GCCFLAGS) -c $< -o $@
+	$(GCCPATH)/aarch64-none-elf-gcc -Iinclude $(GCCFLAGS) -c $< -o $@
 
 kernel8.img: boot.o $(OFILES)
 	$(GCCPATH)/aarch64-none-elf-ld -nostdlib boot.o $(OFILES) -T link.ld -o kernel8.elf
