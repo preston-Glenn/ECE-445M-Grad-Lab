@@ -29,71 +29,77 @@ _start:
     // In case it does return, halt the master core too
     b       1b
 
-        AREA    |.text|, CODE, READONLY
 
-;******************************************************************************
-;
-; Useful functions.
-;
-;******************************************************************************
-        EXPORT  DisableInterrupts
-        EXPORT  EnableInterrupts
-        EXPORT  StartCritical
-        EXPORT  EndCritical
-        EXPORT  WaitForInterrupt
+.global DisableInterrupts
+DisableInterrupts:
+        msr    daifset, #2
+        ret
 
-;*********** DisableInterrupts ***************
-; disable interrupts
-; inputs:  none
-; outputs: none
-DisableInterrupts
-        CPSID  I
-        BX     LR
+.global EnableInterrupts
+EnableInterrupts:
+    msr    daifclr, #2 
+    ret
 
-;*********** EnableInterrupts ***************
-; disable interrupts
-; inputs:  none
-; outputs: none
-EnableInterrupts
-        CPSIE  I
-        BX     LR
 
-;*********** StartCritical ************************
-; make a copy of previous I bit, disable interrupts
-; inputs:  none
-; outputs: previous I bit
-StartCritical
-        MRS    R0, PRIMASK  ; save old status
-        CPSID  I            ; mask all (except faults)
-        BX     LR
+.global StartCritical
+StartCritical:
+        mrs x0, daif
+        b DisableInterrupts
+       ret
 
-;*********** EndCritical ************************
-; using the copy of previous I bit, restore I bit to previous value
-; inputs:  previous I bit
-; outputs: none
-EndCritical
-        MSR    PRIMASK, R0
-        BX     LR
+.global EndCritical
+EndCritical:
+        mrs x1, daif
+        and x0, x0, 1
+        orr x1, x0, x1
+        msr daif, x1 
+        ret
 
-;*********** WaitForInterrupt ************************
-; go to low power mode while waiting for the next interrupt
-; inputs:  none
-; outputs: none
-WaitForInterrupt
+.global WaitForInterrupt
+WaitForInterrupt:
         WFI
-        BX     LR
+        ret
 
 
-;******************************************************************************
-;
-; Make sure the end of this section is aligned.
-;
-;******************************************************************************
-        ALIGN
 
-;******************************************************************************
-;
-; ; Tell the assembler that we're done.
-; ;
-; ;******************************************************************************
-;         END
+.globl cpu_switch_to
+cpu_switch_to:
+	mov	x10, 0
+	add	x8, x0, x10
+	mov	x9, sp
+	stp	x19, x20, [x8], #16		
+	stp	x21, x22, [x8], #16
+	stp	x23, x24, [x8], #16
+	stp	x25, x26, [x8], #16
+	stp	x27, x28, [x8], #16
+	stp	x29, x9, [x8], #16
+	str	x30, [x8]
+	add	x8, x1, x10
+	ldp	x19, x20, [x8], #16		
+	ldp	x21, x22, [x8], #16
+	ldp	x23, x24, [x8], #16
+	ldp	x25, x26, [x8], #16
+	ldp	x27, x28, [x8], #16
+	ldp	x29, x9, [x8], #16
+	ldr	x30, [x8]
+	mov	sp, x9
+	ret
+
+
+.globl StartOS
+StartOS:
+   	mov	x10, 0
+    ldr x0, =currThread    
+    ldr x0, [x0]          
+    add	x8, x0, x10       
+	ldp	x19, x20, [x8], #16		
+	ldp	x21, x22, [x8], #16
+	ldp	x23, x24, [x8], #16
+	ldp	x25, x26, [x8], #16
+	ldp	x27, x28, [x8], #16
+	ldp	x29, x9, [x8], #16
+	ldr	x30, [x8]           
+
+    msr  daifclr, #2                 
+
+    br x30             

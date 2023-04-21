@@ -1,4 +1,3 @@
-#include "OS.h"
 
 .globl cpu_switch_to
 cpu_switch_to:

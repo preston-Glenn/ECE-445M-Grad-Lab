@@ -1,7 +1,7 @@
 #ifndef	_MM_H
 #define	_MM_H
 
-#include "peripherals/base.h"
+#include "base.h"
 
 #define PAGE_SHIFT	 	12
 #define TABLE_SHIFT 		9

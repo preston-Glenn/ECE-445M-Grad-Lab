@@ -13,11 +13,11 @@
 
 // Add_Threads
 #include "mm.h"
-#include "sched.h"
-#include "entry.h"
 #include "OS.h"
 #include "fb.h"
 #include "io.h"
+
+#define NULL 0
 
 #define STACKSIZE 400 // number of 32-bit words in stack
 #define NUMTHREADS 10 // maximum number of threads
@@ -102,12 +102,12 @@ int OS_AddThread(unsigned long task, unsigned long priority)
     newThread->priority = priority;
 
 
-	p->cpu_context.pc = task;
-	p->cpu_context.sp = stack;
+	newThread->cpu_context.pc = task;
+	newThread->cpu_context.sp = stack;
     EndCritical(status);
 
 
-	preempt_enable();
+	//preempt_enable();
 	return 0;
 }
 
@@ -120,7 +120,7 @@ void OS_Kill(void)
     // put Lab 2 (and beyond) solution here
 
     int CriticalSection = StartCritical(); // start of atomic section CHECK IF THIS IS NEEDED
-    PD1 ^= 0x02;       // heartbeat
+    //PD1 ^= 0x02;       // heartbeat
 
     // set currThread to DYING state
     // not dead yet, so that getDeadThreads doesnt get it if addThread is called before we can context switch
@@ -170,13 +170,13 @@ void OS_Suspend(){
 
 // launch
 
-void OS_Launch(uint32_t theTimeSlice)
+void OS_Launch(unsigned int theTimeSlice)
 {
   // put Lab 2 (and beyond) solution here
 
-  time_slice = theTimeSlice;
-  NVIC_ST_RELOAD_R = theTimeSlice - 1; // reload value
-  SysTick_Enable();
+  int time_slice = theTimeSlice;
+  //NVIC_ST_RELOAD_R = theTimeSlice - 1; // reload value
+ // SysTick_Enable();
   // Check to make sure a thread is available TODO:
   StartOS();
 }

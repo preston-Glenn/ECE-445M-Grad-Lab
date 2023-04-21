@@ -49,14 +49,14 @@ int counter7(){
         if(i % 100000 == 0){
             count++;
             // TODO: add semaphores.....
-            drawString((WIDTH/2)+252, MARGIN-25, "Score: 0     Lives:  ", 0x0f, 3);
+            drawString((WIDTH/2)+252, MARGIN-25, "Game: 0     Done:  ", 0x0f, 3);
             drawChar(count + 0x30, (WIDTH/2)+252 + (8*8*3), MARGIN-25, 0x0f, 3);
             OS_Suspend();
 
         }
         if(count == 10){
             // print closing thread
-            drawString((WIDTH/2)-252, MARGIN-25, "Killing Thread", 0x0f, 3);
+            drawString((WIDTH/2)-252, MARGIN-25, "Kissing Thread", 0x0f, 3);
             OS_Kill();
             
         }

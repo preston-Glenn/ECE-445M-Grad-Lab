@@ -8,6 +8,7 @@ all: clean kernel8.img
 boot.o: boot.S
 	$(GCCPATH)/aarch64-none-elf-gcc $(GCCFLAGS) -c boot.S -o boot.o
 
+
 %.o: %.c
 	$(GCCPATH)/aarch64-none-elf-gcc $(GCCFLAGS) -c $< -o $@
 

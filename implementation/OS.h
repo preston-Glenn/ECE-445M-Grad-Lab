@@ -42,6 +42,8 @@ struct cpu_context {
 // 	long preempt_count;
 // };
 
+typedef struct tcb TCB;
+typedef TCB *TCBptr;
 
 struct tcb
 {
@@ -62,6 +64,8 @@ struct tcb
 //   PCBptr pcb;
 };
 
+
+
 // add status enum
 enum status
 {
@@ -73,8 +77,7 @@ enum status
   FATAL
 };
 
-typedef struct tcb TCB;
-typedef TCB *TCBptr;
+
 
 extern void sched_init(void);
 extern void schedule(void);
