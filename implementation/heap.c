@@ -27,6 +27,16 @@
 
 
 #include "heap.h"
+#include "OS.h"
+
+#define NULL 0
+
+int abs(int x)  {
+  if(x >= 0)
+    return x;
+  else
+    return -x;
+}
 
 
 #define HEAP_SIZE (1024 * 2 ) // 4KB heap

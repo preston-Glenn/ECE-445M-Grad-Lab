@@ -66,6 +66,7 @@ regs Kusti, 23.10.2004
 */
 
 
+/*
 #ifndef __TFP_PRINTF__
 #define __TFP_PRINTF__
 
@@ -82,3 +83,5 @@ void tfp_format(void* putp,void (*putf) (void*,char),char *fmt, va_list va);
 #define sprintf tfp_sprintf
 
 #endif
+
+*/

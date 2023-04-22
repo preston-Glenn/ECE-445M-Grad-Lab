@@ -17,6 +17,8 @@
 #include "fb.h"
 #include "io.h"
 
+PCB PCB_array[NUM_PROCESSES];
+
 unsigned int Mail; // shared data
 Sema4Type BoxFree;
 Sema4Type BoxDataValid;
@@ -117,7 +119,85 @@ int OS_AddThread(unsigned long task, unsigned long priority)
 	return 0;
 }
 
+// getNextPCB
+PCBptr getNextPCB()
+{
+  int i;
+  for (i = 0; i < NUM_PROCESSES; i++)
+  {
+    if (PCB_array[i].num_threads == 0)
+    {
+      return &PCB_array[i];
+    }
+  }
+  return NULL;
+}
 
+char *NAME = "NEW_THREAD";
+
+int OS_AddThreadwithPCB(void (*task)(void), int stackSize, int priority, PCBptr pcb) {
+
+  int status = StartCritical();
+
+  TCBptr newThread = getNextDeadThread();
+
+  // if no TCBs are available, return 0
+  if (newThread == NULL)
+  {
+    EndCritical(status);
+    return 0; // no TCBs remain available
+  }
+
+  // if currThread is NULL, set currThread to newThread
+  if (currThread == NULL) currThread = newThread;
+
+  unsigned long stack =  get_free_page(); // allocate stack allocate heap
+	if (!stack)
+		return 1;
+
+
+  newThread->status = ALIVE;
+  newThread->ticks_run = 0;
+
+  newThread->cpu_context.pc = task;
+	newThread->cpu_context.sp = stack;
+  
+  
+  newThread->name = NAME;
+  newThread->pcb = pcb;
+  newThread->pcb->num_threads++;
+
+   EndCritical(status);
+
+  return 1; // replace this line with solution
+
+  EndCritical(status);
+
+}
+
+int OS_AddProcess(void (*entry)(void), void *text, void *data, unsigned long stackSize, unsigned long priority) {
+  int status = StartCritical();
+
+  PCBptr new_pcb = getNextPCB();
+
+  if(new_pcb == NULL) return 0;
+
+  new_pcb->text = text;
+  new_pcb->data = data;
+
+  int result = OS_AddThreadwithPCB(entry, stackSize, priority, new_pcb);
+
+  if(result == 0) {
+    new_pcb->text = 0;
+		new_pcb->data = 0;
+    new_pcb->num_threads = 0;
+    EndCritical(status);
+    return 0;
+  }
+
+  EndCritical(status);
+  return 1;
+}
 
 // Kill_Thread
 
@@ -206,7 +286,7 @@ void OS_Init(){
 
 // Semaphores 
 
-void OS_InitSemaphore(Sema4Type *semaPt, int32_t value)
+void OS_InitSemaphore(Sema4Type *semaPt, int value)
 {
     // put Lab 2 (and beyond) solution here
     semaPt->Value = value;

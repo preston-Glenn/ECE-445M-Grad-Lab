@@ -23,16 +23,17 @@ typedef struct heap_stats {
   unsigned int* data;
 } heap_stats_t;
 
-struct PCB {
+/*struct PCB {
  int ID;
- uint8_t priority;
- uint8_t num_threads;
- void* text;
+ int priority;
+ int num_threads;
+ void* text;              ********* Defined in OS.h *************
  void* data;
    
 };
 typedef struct PCB PCB;
 typedef struct PCB* PCBptr;
+*/
 
 typedef enum {CHILD, PARENT} ThreadType;
 

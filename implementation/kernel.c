@@ -30,6 +30,7 @@ int counter(){
 
             drawString((WIDTH/2)+252, MARGIN-25, "Score: 0     Lives:  ", 0x0f, 3);
             drawChar(count + 0x30, (WIDTH/2)-252 + (8*8*3), MARGIN-25, 0x0f, 3);
+            OS_Sleep(1000);
             // OS_Suspend();
         }
         if(count == 10){
@@ -78,7 +79,9 @@ int idle(){
     while(1){
         if((i % 100001) == 0)  {
         drawString((WIDTH/2)+252, MARGIN+60, "Idle", 0x0f, 3);
-        drawChar(count + 0x30, (WIDTH/2)+252, MARGIN+90, 0x0f, 3);
+        //drawChar(count + 0x30, (WIDTH/2)+252, MARGIN+90, 0x0f, 3);
+
+        i++;
 
         count++;
 
@@ -155,14 +158,14 @@ void main()
     counts = 0;
 
     //if (bricks == 0) 
-    drawString((WIDTH/2)-(strwidth/2), (HEIGHT/2)-(strheight/2), "Well donf!", 0x02, zoom);
+    drawString((WIDTH/2)-(strwidth/2), (HEIGHT/2)-(strheight/2), "New text!", 0x02, zoom);
     //else drawString((WIDTH/2)-(strwidth/2), (HEIGHT/2)-(strheight/2), "Game over!", 0x04, zoom);
 
     // add threads
-   // OS_AddThread(&counter, 1);
+   OS_AddThread(&counter, 1);
     OS_AddThread(&counter7, 1);
     OS_AddThread(&idle, 3);
-    OS_AddThread(&true_idle, 3);
+    //OS_AddProcess(&counter7, 0, 0, 1, 128, 1);
 
 
     // delay

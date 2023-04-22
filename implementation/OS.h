@@ -14,6 +14,8 @@
 
 #define TASK_RUNNING				0
 
+#define NUM_PROCESSES 8
+
 extern struct task_struct *current;
 extern struct task_struct * task[NR_TASKS];
 extern int nr_tasks;
@@ -34,6 +36,18 @@ struct cpu_context {
 	unsigned long pc; // lr 
 };
 
+struct PCB {
+ int ID;
+ int priority;
+ int num_threads;
+ void* text;
+ void* data;
+   
+};
+typedef struct PCB PCB;
+typedef struct PCB* PCBptr;
+
+
 // struct task_struct {
 // 	struct cpu_context cpu_context;
 // 	long state;	
@@ -44,6 +58,9 @@ struct cpu_context {
 
 typedef struct tcb TCB;
 typedef TCB *TCBptr;
+
+
+extern PCB PCB_array[NUM_PROCESSES];
 
 struct tcb
 {
@@ -61,7 +78,7 @@ struct tcb
   unsigned long ticks_run; // number of ticks thread has run
   char *name;        // name of thread
   unsigned long status;
-//   PCBptr pcb;
+   PCBptr pcb;
 };
 
 
@@ -93,7 +110,7 @@ extern void cpu_switch_to(TCBptr prev, TCBptr next);
 }
 
 struct  Sema4{
-  int32_t Value;   // >0 means free, otherwise means busy      
+  int Value;   // >0 means free, otherwise means busy      
 	TCBptr blocked;
   TCBptr running;
 // add other components here, if necessary to implement blocking
