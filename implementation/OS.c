@@ -355,10 +355,13 @@ OS_Sleep(unsigned long sleepTime)
 {
   // put Lab 2 (and beyond) solution here
   // put solution here
+  int status = StartCritical();
   if(sleepTime == 0) return;
   currThread->sleep = sleepTime;
   currThread->status = SLEEPING;
-  OS_Scheduler();
+  EndCritical(status);
+  OS_Suspend();
+
 };
 
 
