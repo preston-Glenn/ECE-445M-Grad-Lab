@@ -25,20 +25,23 @@ int counter(){
     int count = 0;
     while(1){
         i+=2;
-        if(i % 100000 == 0){
+        if(i % 3 == 0){
             count++;
 
             drawString((WIDTH/2)+252, MARGIN-25, "Score: 0     Lives:  ", 0x0f, 3);
             drawChar(count + 0x30, (WIDTH/2)-252 + (8*8*3), MARGIN-25, 0x0f, 3);
-            OS_Sleep(1000);
+            // OS_Sleep(1);
             // OS_Suspend();
+        } else {
+            drawString((WIDTH/2)+252, MARGIN-25, "Nope: 0     Dead:  ", 0x0f, 3);
+            drawChar(count + 0x30, (WIDTH/2)-252 + (8*8*3), MARGIN-25, 0x0f, 3);
         }
-        if(count == 10){
-            // print closing thread
-            drawString((WIDTH/2)-252, MARGIN-25, "Killing Thread", 0x0f, 3);
-            OS_Kill();
+        // if(count == 10){
+        //     // print closing thread
+        //     drawString((WIDTH/2)-252, MARGIN-25, "Killing Thread", 0x0f, 3);
+        //     OS_Kill();
             
-        }
+        // }
     }
 }
 
