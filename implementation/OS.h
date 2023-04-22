@@ -92,5 +92,13 @@ extern void cpu_switch_to(TCBptr prev, TCBptr next);
 /* state etc */	0,0,1, 0 \
 }
 
+struct  Sema4{
+  int32_t Value;   // >0 means free, otherwise means busy      
+	TCBptr blocked;
+  TCBptr running;
+// add other components here, if necessary to implement blocking
+};
+typedef struct Sema4 Sema4Type;
+
 #endif
 #endif

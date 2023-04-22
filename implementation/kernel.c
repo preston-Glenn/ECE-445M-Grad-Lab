@@ -62,13 +62,12 @@ int counter7(){
             OS_Suspend();
 
         }
-        // if(count == 100000000){
-        //     // print closing thread
-        //     drawString((WIDTH/2)-252, MARGIN+25, "Kissing Thread", 0x0f, 3);
-        //     OS_Kill();
-            
-        // }
+
     }
+    // TODO: TEST THIS FIRST :: demos kill thread works!
+    OS_Kill(); 
+    drawString((WIDTH/2)+252, MARGIN-25, "Thread Failed to close!!", 0x0f, 3);
+
 }
 
 // never dies
@@ -79,7 +78,7 @@ int idle(){
     while(1){
         if((i % 100001) == 0)  {
         drawString((WIDTH/2)+252, MARGIN+60, "Idle", 0x0f, 3);
-        drawChar(count + '0', (WIDTH/2)+252, MARGIN+90, 0x0f, 3);
+        drawChar(count + 0x30, (WIDTH/2)+252, MARGIN+90, 0x0f, 3);
 
         count++;
 
@@ -87,6 +86,35 @@ int idle(){
         }
         OS_Suspend();
     }
+}
+
+int producer(){
+    int i = 0;
+    while( i < 100){
+        OS_MailBox_Send(i);
+        i++;
+        OS_Suspend(); // get rid of if we get preemption working
+    }
+
+    OS_Kill();
+    // print to screen thread failed to close
+    drawString((WIDTH/2)+252, MARGIN-25, "Thread Failed to close!!", 0x0f, 3);
+
+}
+
+int consumer(){
+    int i = 0;
+    while( i < 100){
+        unsigned int input = OS_MailBox_Recv();
+        i++;
+        drawChar(input % 100 + 0x30, (WIDTH/8)+252, MARGIN+100, 0x0f, 3);
+        drawChar(input % 10 + 0x30,  (WIDTH/8)+300, MARGIN+100, 0x0f, 3);
+
+        OS_Suspend(); // get rid of if we get preemption working
+    }
+
+    OS_Kill();
+
 }
 
 

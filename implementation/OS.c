@@ -17,6 +17,10 @@
 #include "fb.h"
 #include "io.h"
 
+unsigned int Mail; // shared data
+Sema4Type BoxFree;
+Sema4Type BoxDataValid;
+
 #define NULL 0
 
 #define STACKSIZE 400 // number of 32-bit words in stack
@@ -186,6 +190,7 @@ void OS_Launch(unsigned int theTimeSlice)
 void OS_Init(){
     DisableInterrupts();
     prep_dead_threads();
+    OS_MailBox_Init();
     uart_init();
     fb_init();
 
@@ -197,8 +202,72 @@ void OS_Init(){
 
 // id 
 
-// 
+// Semaphores 
 
+void OS_InitSemaphore(Sema4Type *semaPt, int32_t value)
+{
+    // put Lab 2 (and beyond) solution here
+    semaPt->Value = value;
+    semaPt->blocked = NULL;
+};
+
+void OS_Signal(Sema4Type *semaPt)
+{
+  long critical = StartCritical();
+  semaPt->Value = semaPt->Value + 1;
+  EndCritical(critical);
+
+};
+
+
+void OS_Wait(Sema4Type *semaPt){
+
+  DisableInterrupts();
+  while (semaPt->Value <= 0)
+  {
+    EnableInterrupts();
+    OS_Suspend(); // run thread switcher
+    DisableInterrupts();
+  }
+  semaPt->Value = semaPt->Value - 1;
+  EnableInterrupts();
+	
+};
+
+void OS_MailBox_Init(void)
+{
+  // put Lab 2 (and beyond) solution here
+
+  OS_InitSemaphore(&BoxDataValid, 0);
+  OS_InitSemaphore(&BoxFree, 1);
+
+  // put solution here
+};
+
+
+void OS_MailBox_Send(unsigned int data)
+{
+  // put Lab 2 (and beyond) solution here
+  // put solution here
+  OS_Wait(&BoxFree);
+  Mail = data;
+  OS_Signal(&BoxDataValid);
+};
+
+unsigned int OS_MailBox_Recv(void)
+{
+  // put Lab 2 (and beyond) solution here
+
+  unsigned int recvData;
+
+  OS_Wait(&BoxDataValid);
+
+  recvData = Mail;
+
+  OS_Signal(&BoxFree);
+
+  return recvData;
+};
 
 // If only cooperative where its always a function call then we dont need to save R0 - R18 since they are volatile
 // but if we want to support preemption then we need to save them. This can be done easily with an interrupt handler
