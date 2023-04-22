@@ -21,24 +21,24 @@ unsigned int bricks = ROWS * COLS;
 
 
 int counter(){
-    // int i = 0;
-    // int count = 0;
-    // while(1){
-    //     i+=2;
-    //     if(i % 100000 == 0){
-    //         count++;
+    int i = 0;
+    int count = 0;
+    while(1){
+        i+=2;
+        if(i % 100000 == 0){
+            count++;
 
-    //         drawString((WIDTH/2)+252, MARGIN-25, "Score: 0     Lives:  ", 0x0f, 3);
-    //         drawChar(count + 0x30, (WIDTH/2)-252 + (8*8*3), MARGIN-25, 0x0f, 3);
-    //         OS_Suspend();
-    //     }
-    //     if(count == 10){
-    //         // print closing thread
-    //         drawString((WIDTH/2)-252, MARGIN-25, "Killing Thread", 0x0f, 3);
-    //         OS_Kill();
+            drawString((WIDTH/2)+252, MARGIN-25, "Score: 0     Lives:  ", 0x0f, 3);
+            drawChar(count + 0x30, (WIDTH/2)-252 + (8*8*3), MARGIN-25, 0x0f, 3);
+            // OS_Suspend();
+        }
+        if(count == 10){
+            // print closing thread
+            drawString((WIDTH/2)-252, MARGIN-25, "Killing Thread", 0x0f, 3);
+            OS_Kill();
             
-    //     }
-    // }
+        }
+    }
 }
 
 int counter7(){
@@ -51,7 +51,7 @@ int counter7(){
             // TODO: add semaphores.....
             drawString((WIDTH/2)+252, MARGIN+25, "Game: 0     Done:  ", 0x0f, 3);
             drawChar(count + 0x30, (WIDTH/2)+252 + (8*8*3), MARGIN-25, 0x0f, 3);
-            OS_Suspend();
+            // OS_Suspend();
 
         }
         else {
@@ -59,7 +59,7 @@ int counter7(){
             // TODO: add semaphores.....
             drawString((WIDTH/2)+252, MARGIN+25, "Test: 0     Gers:  ", 0x0f, 3);
             drawChar(count + 0x30, (WIDTH/2)+252 + (8*8*3), MARGIN-25, 0x0f, 3);
-            OS_Suspend();
+            // OS_Suspend();
 
         }
 
@@ -84,6 +84,12 @@ int idle(){
 
         // drawChar(i%10 + '0', (WIDTH/2)+252 + (8*8*3), MARGIN-25, 0x0f, 3);
         }
+        // OS_Suspend();
+    }
+}
+
+int true_idle(){
+    while(1){
         OS_Suspend();
     }
 }
@@ -156,6 +162,7 @@ void main()
    // OS_AddThread(&counter, 1);
     OS_AddThread(&counter7, 1);
     OS_AddThread(&idle, 3);
+    OS_AddThread(&true_idle, 3);
 
 
     // delay

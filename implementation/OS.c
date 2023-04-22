@@ -30,6 +30,8 @@ TCB TCB_array[NUMTHREADS];
 TCBptr currThread;
 
 
+int PREEMPTIVE = 0;
+
 void prep_dead_threads()
 {
   int i = 0;
@@ -178,7 +180,7 @@ void OS_Launch(unsigned int theTimeSlice)
 {
   // put Lab 2 (and beyond) solution here
 
-  int time_slice = theTimeSlice;
+  timer_init(theTimeSlice);
   //NVIC_ST_RELOAD_R = theTimeSlice - 1; // reload value
  // SysTick_Enable();
   // Check to make sure a thread is available TODO:
@@ -268,6 +270,42 @@ unsigned int OS_MailBox_Recv(void)
 
   return recvData;
 };
+
+OS_Sleep(unsigned long sleepTime)
+{
+  // put Lab 2 (and beyond) solution here
+  // put solution here
+  if(sleepTime == 0) return;
+  currThread->sleep = sleepTime;
+  currThread->status = SLEEPING;
+  OS_Scheduler();
+};
+
+
+void OS_SysTick_Handler(void)
+{
+
+  int status = StartCritical();
+  int i = 0;
+  for (i = 0; i < NUMTHREADS; i++)
+  {
+    if (TCB_array[i].sleep > 0 && TCB_array[i].status == SLEEPING)
+    {
+      TCB_array[i].sleep--;
+    }
+    if (TCB_array[i].sleep == 0 && TCB_array[i].status == SLEEPING)
+    {
+      TCB_array[i].status = ALIVE;
+    }
+  }
+
+  if(PREEMPTIVE)
+    OS_Scheduler();
+
+  EndCritical(status);
+
+
+}
 
 // If only cooperative where its always a function call then we dont need to save R0 - R18 since they are volatile
 // but if we want to support preemption then we need to save them. This can be done easily with an interrupt handler
