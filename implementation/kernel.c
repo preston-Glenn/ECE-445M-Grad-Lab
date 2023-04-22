@@ -51,7 +51,7 @@ int counter7(){
             count++;
             // TODO: add semaphores.....
             drawString((WIDTH/2)+252, MARGIN+25, "Game: 0     Done:  ", 0x0f, 3);
-            drawChar(count + 0x30, (WIDTH/2)+252 + (8*8*3), MARGIN-25, 0x0f, 3);
+            drawChar(count + 0x30, (WIDTH/2)+252 + (8*8*3), MARGIN+25, 0x0f, 3);
             // OS_Suspend();
 
         }
@@ -59,7 +59,7 @@ int counter7(){
             count++;
             // TODO: add semaphores.....
             drawString((WIDTH/2)+252, MARGIN+25, "Test: 0     Gers:  ", 0x0f, 3);
-            drawChar(count + 0x30, (WIDTH/2)+252 + (8*8*3), MARGIN-25, 0x0f, 3);
+            drawChar(count + 0x30, (WIDTH/2)+252 + (8*8*3), MARGIN+25, 0x0f, 3);
             // OS_Suspend();
 
         }
@@ -67,7 +67,7 @@ int counter7(){
     }
     // TODO: TEST THIS FIRST :: demos kill thread works!
     OS_Kill(); 
-    drawString((WIDTH/2)+252, MARGIN-25, "Thread Failed to close!!", 0x0f, 3);
+    drawString((WIDTH/2)+252, MARGIN+25, "Thread Failed to close!!", 0x0f, 3);
 
 }
 

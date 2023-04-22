@@ -50,6 +50,7 @@
         "list": "c",
         "string": "c",
         "optional": "c",
-        "new": "c"
+        "new": "c",
+        "irq.h": "c"
     }
 }
