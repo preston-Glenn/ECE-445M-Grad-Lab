@@ -31,10 +31,11 @@ int counter(){
             drawString((WIDTH/2)+252, MARGIN-25, "Score: 0     Lives:  ", 0x0f, 3);
             drawChar(count + 0x30, (WIDTH/2)-252 + (8*8*3), MARGIN-25, 0x0f, 3);
             // OS_Sleep(1);
-            // OS_Suspend();
+            OS_Suspend();
         } else {
             drawString((WIDTH/2)+252, MARGIN-25, "Nope: 0     Dead:  ", 0x0f, 3);
             drawChar(count + 0x30, (WIDTH/2)-252 + (8*8*3), MARGIN-25, 0x0f, 3);
+            OS_Suspend();
         }
         // if(count == 10){
         //     // print closing thread
@@ -55,7 +56,7 @@ int counter7(){
             // TODO: add semaphores.....
             drawString((WIDTH/2)+252, MARGIN+25, "Game: 0     Done:  ", 0x0f, 3);
             drawChar(count + 0x30, (WIDTH/2)+252 + (8*8*3), MARGIN+25, 0x0f, 3);
-            // OS_Suspend();
+            OS_Suspend();
 
         }
         else {
@@ -63,7 +64,7 @@ int counter7(){
             // TODO: add semaphores.....
             drawString((WIDTH/2)+252, MARGIN+25, "Test: 0     Gers:  ", 0x0f, 3);
             drawChar(count + 0x30, (WIDTH/2)+252 + (8*8*3), MARGIN+25, 0x0f, 3);
-            // OS_Suspend();
+            OS_Suspend();
 
         }
 
@@ -90,7 +91,7 @@ int idle(){
 
         // drawChar(i%10 + '0', (WIDTH/2)+252 + (8*8*3), MARGIN-25, 0x0f, 3);
         }
-        // OS_Suspend();
+        OS_Suspend();
     }
 }
 
