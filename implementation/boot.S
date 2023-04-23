@@ -553,3 +553,15 @@ memzero:
     b.gt memzero
     ret
     
+
+
+.globl set_pgd
+set_pgd:
+    msr ttbr0_el1, x0
+    /* tlb invalidate, vm all el1 inner sharable */
+    tlbi vmalle1is
+    /* data sync inner sharable */
+    dsb ish
+    /* instruction sync barrier, flushes pipeline */
+    isb
+    ret

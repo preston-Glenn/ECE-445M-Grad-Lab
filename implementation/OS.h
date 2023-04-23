@@ -15,6 +15,8 @@
 #define TASK_RUNNING				0
 
 #define NUM_PROCESSES 8
+#define MAX_PAGE_COUNT    16
+
 
 extern struct task_struct *current;
 extern struct task_struct * task[NR_TASKS];
@@ -62,6 +64,21 @@ typedef TCB *TCBptr;
 
 extern PCB PCB_array[NUM_PROCESSES];
 
+struct user_page
+{
+    u64 pa;
+    u64 uva;
+};
+
+struct mm_struct
+{
+    u64 pgd;
+    struct user_page user_pages[MAX_PAGE_COUNT];
+    u64 kernel_pages[MAX_PAGE_COUNT];
+};
+
+
+
 struct tcb
 {
   struct cpu_context cpu_context;  
@@ -79,7 +96,18 @@ struct tcb
   char *name;        // name of thread
   unsigned long status;
    PCBptr pcb;
+  u64 flags;
+  struct mm_struct mm;
 };
+
+#define INIT_TASK \
+/* core_context */	{ {0,0,0,0,0,0,0,0,0,0,0,0,0}, \
+/* next */		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+/* PCBprt*/   0, 0\  
+
+/* mm */ {0, {{0}}, {0} } \
+}
+
 
 
 
@@ -106,10 +134,6 @@ extern void cpu_switch_to(TCBptr prev, TCBptr next);
 
 void OS_SysTick_Handler(void);
 
-#define INIT_TASK \
-/*cpu_context*/	{ {0,0,0,0,0,0,0,0,0,0,0,0,0}, \
-/* state etc */	0,0,1, 0 \
-}
 
 struct  Sema4{
   int Value;   // >0 means free, otherwise means busy      
@@ -118,6 +142,8 @@ struct  Sema4{
 // add other components here, if necessary to implement blocking
 };
 typedef struct Sema4 Sema4Type;
+
+
 
 #endif
 #endif

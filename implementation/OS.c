@@ -80,6 +80,7 @@ void switch_to( TCBptr next)
 		return;
 	TCBptr prev = currThread;
 	currThread = next;
+  set_pgd(next->mm.pgd);
 	cpu_switch_to(prev, next);
 }
 
