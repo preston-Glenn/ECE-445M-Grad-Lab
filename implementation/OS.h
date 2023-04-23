@@ -104,6 +104,8 @@ extern void preempt_enable(void);
 extern void switch_to(TCBptr next);
 extern void cpu_switch_to(TCBptr prev, TCBptr next);
 
+void OS_SysTick_Handler(void);
+
 #define INIT_TASK \
 /*cpu_context*/	{ {0,0,0,0,0,0,0,0,0,0,0,0,0}, \
 /* state etc */	0,0,1, 0 \

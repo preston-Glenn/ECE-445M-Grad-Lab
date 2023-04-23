@@ -1,10 +1,12 @@
-#ifndef	_IRQ_H
-#define	_IRQ_H
+#ifndef IRQ_H
+#define IRQ_H
 
-void enable_interrupt_controller( void );
+#include "types.h"
 
-void irq_vector_init( void );
-void enable_irq( void );
-void disable_irq( void );
+void irq_init_vectors();
+void irq_enable();
+void irq_disable();
 
-#endif  /*_IRQ_H */
+void enable_interrupt_gic(u32 INTID, u32 core);
+
+#endif /* IRQ_H */

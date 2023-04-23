@@ -282,3 +282,39 @@ delay:
 	subs x0, x0, #1
 	bne delay
 	ret
+
+
+// generic timer.S
+.globl get_sys_count
+get_sys_count:
+    mrs x0, CNTPCT_EL0
+    ret
+
+.globl set_CNTP_TVAL
+set_CNTP_TVAL:
+    msr CNTP_TVAL_EL0, x0
+    ret
+
+.globl setup_CNTP_CTL
+setup_CNTP_CTL:
+    mov x9, 1
+    msr CNTP_CTL_EL0, x9
+    ret
+
+
+// irq.S
+.globl irq_init_vectors
+irq_init_vectors:
+    adr x0, vectors
+    msr vbar_el1, x0
+    ret
+
+.globl irq_enable
+irq_enable:
+    msr daifclr, #2 /* clear the 'i' mask */
+    ret
+
+.globl irq_disable
+irq_disable:
+    msr daifset, #2 /* set the 'i' mask */
+    ret
