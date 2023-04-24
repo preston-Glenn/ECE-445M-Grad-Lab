@@ -1,22 +1,30 @@
-#ifndef	_P_IRQ_H
-#define	_P_IRQ_H
+#ifndef PER_IRQ_H
+#define PER_IRQ_H
 
-#include "base.h"
+#include "types.h"
+#include "mm.h"
 
-#define IRQ_BASIC_PENDING	(PBASE+0x0000B200)
-#define IRQ_PENDING_1		(PBASE+0x0000B204)
-#define IRQ_PENDING_2		(PBASE+0x0000B208)
-#define FIQ_CONTROL		(PBASE+0x0000B20C)
-#define ENABLE_IRQS_1		(PBASE+0x0000B210)
-#define ENABLE_IRQS_2		(PBASE+0x0000B214)
-#define ENABLE_BASIC_IRQS	(PBASE+0x0000B218)
-#define DISABLE_IRQS_1		(PBASE+0x0000B21C)
-#define DISABLE_IRQS_2		(PBASE+0x0000B220)
-#define DISABLE_BASIC_IRQS	(PBASE+0x0000B224)
+#define GIC_BASE            PA_TO_KVA(0xFF840000)
+#define GICD_BASE           (GIC_BASE + 0x1000)
+#define GICC_BASE           (GIC_BASE + 0x2000)
 
-#define SYSTEM_TIMER_IRQ_0	(1 << 0)
-#define SYSTEM_TIMER_IRQ_1	(1 << 1)
-#define SYSTEM_TIMER_IRQ_2	(1 << 2)
-#define SYSTEM_TIMER_IRQ_3	(1 << 3)
+#define GICD_ISENABLER_BASE (GICD_BASE + 0x100)
+#define GICD_ITARGETSR_BASE (GICD_BASE + 0x800)
 
-#endif  /*_P_IRQ_H */
+#define GICC_IAR            (GICC_BASE + 0x0C)
+#define GICC_EOIR           (GICC_BASE + 0x10)
+
+struct distributor_enable_regs
+{
+    reg32 bitmap[32];
+};
+
+struct distributor_target_regs
+{
+    reg32 set[255];
+};
+
+#define GICD_ISENABLERN     ((struct distributor_enable_regs *)(GICD_ISENABLER_BASE))
+#define GICD_ITARGETSRN     ((struct distributor_target_regs *)(GICD_ITARGETSR_BASE))
+
+#endif /* PER_IRQ_H */

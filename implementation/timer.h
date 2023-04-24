@@ -1,7 +1,7 @@
-#ifndef	_TIMER_H
-#define	_TIMER_H
+#ifndef TIMER_H
+#define TIMER_H
 
-void timer_init ( void );
-void handle_timer_irq ( void );
+void timer_init();
+void handle_sys_timer_1();
 
-#endif  /*_TIMER_H */
+#endif /* TIMER_H */

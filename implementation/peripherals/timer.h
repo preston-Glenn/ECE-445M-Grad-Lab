@@ -1,19 +1,17 @@
-#ifndef	_P_TIMER_H
-#define	_P_TIMER_H
+#ifndef PER_TIMER_H
+#define PER_TIMER_H
 
-#include "base.h"
+#include "peripherals/base.h"
+#include "types.h"
 
-#define TIMER_CS        (PBASE+0x00003000)
-#define TIMER_CLO       (PBASE+0x00003004)
-#define TIMER_CHI       (PBASE+0x00003008)
-#define TIMER_C0        (PBASE+0x0000300C)
-#define TIMER_C1        (PBASE+0x00003010)
-#define TIMER_C2        (PBASE+0x00003014)
-#define TIMER_C3        (PBASE+0x00003018)
+#define CLOCKHZ 1000000
 
-#define TIMER_CS_M0	(1 << 0)
-#define TIMER_CS_M1	(1 << 1)
-#define TIMER_CS_M2	(1 << 2)
-#define TIMER_CS_M3	(1 << 3)
+struct sys_timer_regs {
+    reg32 countrol_status;
+    reg32 counter_lo;
+    reg32 counter_hi;
+    reg32 compare[4];
+};
 
-#endif  /*_P_TIMER_H */
+#define SYS_REGS_TIMER ((struct sys_timer_regs *)(PBASE + 0x3000))
+#endif /* PER_TIMER_H */

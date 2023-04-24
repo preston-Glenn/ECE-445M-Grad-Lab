@@ -1,24 +1,21 @@
-#include "utils.h"
-#include "printf.h"
 #include "peripherals/timer.h"
-#include "OS.h"
+// #include "utils.h"
 
-unsigned int interval = 200000;
-unsigned int curVal = 0;
+const u32 interval_1 = CLOCKHZ;
+u32 cur_ls32_1 = 0;
 
-void timer_init ( unsigned int ts )
+/* we can only use system timer compare 1 and 3, 0 and 2 are used by the vc. */
+void timer_init()
 {
-    if(ts > 0) interval = ts;
-	curVal = get32(TIMER_CLO);
-	curVal += interval;
-	put32(TIMER_C1, curVal);
+    cur_ls32_1 = SYS_REGS_TIMER->counter_lo;
+    cur_ls32_1 += interval_1;
+    SYS_REGS_TIMER->compare[1] = cur_ls32_1;
 }
 
-void handle_timer_irq( void ) 
+void handle_sys_timer_1()
 {
-	curVal += interval;
-	put32(TIMER_C1, curVal);
-	put32(TIMER_CS, TIMER_CS_M1);
-	// printf("Timer interrupt received\n\r");
-    OS_SysTick_Handler();
+    cur_ls32_1 += interval_1;
+    SYS_REGS_TIMER->compare[1] = cur_ls32_1;
+    SYS_REGS_TIMER->countrol_status |= (1 << 1);
+    // main_output(MU, "timer 1 interrupt\n");
 }
