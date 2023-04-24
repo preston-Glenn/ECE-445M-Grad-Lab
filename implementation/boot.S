@@ -292,6 +292,7 @@ cpu_switch_to:
 	mov	sp, x9
 	ret
 
+#include "OS.h"
 
 .globl StartOS
 StartOS:
@@ -305,7 +306,9 @@ StartOS:
 	ldp	x25, x26, [x8], #16
 	ldp	x27, x28, [x8], #16
 	ldp	x29, x9, [x8], #16
-	ldr	x30, [x8]           
+	ldr	x30, [x8]   
+
+    bl set_PGD_CURR        
 
     msr  daifclr, #2                 
 
@@ -612,4 +615,17 @@ set_CNTP_TVAL:
 setup_CNTP_CTL:
     mov x9, 1
     msr CNTP_CTL_EL0, x9
+    ret
+
+
+//Sched.S
+.globl set_pgd
+set_pgd:
+    msr ttbr0_el1, x0
+    /* tlb invalidate, vm all el1 inner sharable */
+    tlbi vmalle1is
+    /* data sync inner sharable */
+    dsb ish
+    /* instruction sync barrier, flushes pipeline */
+    isb
     ret

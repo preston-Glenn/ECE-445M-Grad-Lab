@@ -83,7 +83,12 @@ void switch_to( TCBptr next)
 		return;
 	TCBptr prev = currThread;
 	currThread = next;
+  set_pgd(next->mm.pgd)
 	cpu_switch_to(prev, next);
+}
+
+void set_PGD_CURR(){
+  set_pgd(currThread->mm.pgd);
 }
 
 int OS_AddThread(unsigned long task, unsigned long priority)
@@ -118,7 +123,7 @@ int OS_AddThread(unsigned long task, unsigned long priority)
   newThread->mm.pgd = 0;
   newThread->heap = allocate_user_page(newThread, 0);
   newThread->heap_size = PAGE_SIZE;
-  newThread->stack = allocate_user_page(newThread, PAGE_SIZE);
+  newThread->stack = allocate_user_page(newThread, PAGE_SIZE * 2);
 
   EndCritical(status);
 

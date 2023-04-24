@@ -134,6 +134,7 @@ extern void preempt_disable(void);
 extern void preempt_enable(void);
 extern void switch_to(TCBptr next);
 extern void cpu_switch_to(TCBptr prev, TCBptr next);
+void set_PGD_CURR();
 
 void OS_SysTick_Handler(void);
 
