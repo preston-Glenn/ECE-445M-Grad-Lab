@@ -83,7 +83,7 @@ void switch_to( TCBptr next)
 		return;
 	TCBptr prev = currThread;
 	currThread = next;
-  set_pgd(next->mm.pgd)
+  set_pgd(next->mm.pgd);
 	cpu_switch_to(prev, next);
 }
 
@@ -291,7 +291,7 @@ void OS_Init(){
 
     irq_init_vectors();
     generic_timer_init();
-    enable_interrupt_gic(NS_PHYS_TIMER_IRQ, id);
+    enable_interrupt_gic(NS_PHYS_TIMER_IRQ, 0);
 
     // other initializations
     // TODO: make sure that we enable interrupts at StartOS

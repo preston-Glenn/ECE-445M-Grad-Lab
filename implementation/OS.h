@@ -17,6 +17,7 @@
 #define NUM_PROCESSES 8
 #define MAX_PAGE_COUNT    16
 
+#include "types.h"
 
 extern struct task_struct *current;
 extern struct task_struct * task[NR_TASKS];
@@ -98,18 +99,18 @@ struct tcb
   PCBptr pcb;
   u64 flags;
   u64 heap;
-  u64 heap_size = PAGE_SIZE;
+  u64 heap_size;
   u64 stack;
   struct mm_struct mm;
 };
 
-#define INIT_TASK \
-/* core_context */	{ {0,0,0,0,0,0,0,0,0,0,0,0,0}, \
-/* next */		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
-/* PCBprt*/   0, 0\  
+// #define INIT_TASK \
+// /* core_context */	{ {0,0,0,0,0,0,0,0,0,0,0,0,0}, \
+// /* next */		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+// /* PCBprt*/   0, 0, \  
 
-/* mm */ {0, {{0}}, {0} } \
-}
+// /* mm */ {0, {{0}}, {0} } \
+// }
 
 
 

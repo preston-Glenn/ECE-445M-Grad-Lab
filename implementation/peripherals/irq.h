@@ -1,8 +1,8 @@
 #ifndef PER_IRQ_H
 #define PER_IRQ_H
 
-#include "types.h"
-#include "mm.h"
+#include "../types.h"
+#include "../mm.h"
 
 #define GIC_BASE            PA_TO_KVA(0xFF840000)
 #define GICD_BASE           (GIC_BASE + 0x1000)

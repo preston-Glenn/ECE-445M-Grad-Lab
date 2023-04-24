@@ -1,8 +1,8 @@
 #ifndef PER_TIMER_H
 #define PER_TIMER_H
 
-#include "peripherals/base.h"
-#include "types.h"
+#include "base.h"
+#include "../types.h"
 
 #define CLOCKHZ 1000000
 

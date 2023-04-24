@@ -1,6 +1,7 @@
 #include "mm.h"
 #include "mmu.h"
 #include "sysregs.h"
+#include "sys.h"
 
 /* changes tmp1, tmp2 only */
 .macro create_table_entry, tbl, ntbl, va, shift, flags, tmp1, tmp2
@@ -41,7 +42,11 @@
     b.le 2b
 .endm
 
+
+
 .section ".text.boot"
+
+#include "mm.h"
 
 .globl _start
 _start:
@@ -50,15 +55,18 @@ _start:
     /* shouldn't come here */
     b proc_hang
 
+#include "mm.h"
+
 master: /* entry point of the primary core */
     bl drop_to_el1
     mov sp, #LOW_MEMORY
     /* adr is load address */
-    adr x0, bss_begin
-    adr x1, bss_end
+    adr x0, __bss_start
+    adr x1, __bss_end
     sub x1, x1, x0
     /* clear out the bss section */
     /* branch and link, x30 is set to the address of the next instruction */
+
     bl memzero
     bl map_identity
     bl map_high
@@ -99,7 +107,7 @@ app: /* entry point of the secondary cores */
     add x1, x1, #LOW_MEMORY
     mov sp, x1
     // if x0 isnt 0
-    bl kernel_main
+    bl main
 
 drop_to_el1:
     adr x0, el1_entry
