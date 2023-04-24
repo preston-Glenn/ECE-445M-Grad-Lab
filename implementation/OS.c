@@ -16,6 +16,9 @@
 #include "OS.h"
 #include "fb.h"
 #include "io.h"
+#include "irq_numbers.h"
+#include "irq.h"
+#include "generic_timer.h"
 
 PCB PCB_array[NUM_PROCESSES];
 

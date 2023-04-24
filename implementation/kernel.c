@@ -134,8 +134,11 @@ int consumer(){
 
 
 
-void main()
+void main(int id)
 {
+
+    while (id != 0) {}
+
     struct Object *foundObject;
     unsigned char ch = 0;
 
