@@ -115,7 +115,12 @@ int OS_AddThread(unsigned long task, unsigned long priority)
 
 	newThread->cpu_context.pc = task;
 	newThread->cpu_context.sp = stack;
-    EndCritical(status);
+  newThread->mm.pgd = 0;
+  newThread->heap = allocate_user_page(newThread, 0);
+  newThread->heap_size = PAGE_SIZE;
+  newThread->stack = allocate_user_page(newThread, PAGE_SIZE);
+
+  EndCritical(status);
 
 
 	//preempt_enable();

@@ -40,6 +40,8 @@ int abs(int x)  {
 
 
 #define HEAP_SIZE (1024 * 2 ) // 4KB heap
+// #define HEAP_SIZE (1024 * 2 ) // 4KB heap PAGE_SIZE
+#define WORD_SIZE 4 // 4 bytes per word
 
 
 // TODO: remove heap and use the currentThread's heap in its PCB
@@ -70,9 +72,9 @@ int Heap_Init(void){
   heap[0] = -1 * (HEAP_SIZE - 2); // size of heap
   heap[HEAP_SIZE-1] = -1 * (HEAP_SIZE - 2); // size of heap
 
-  heap_stats.size = (HEAP_SIZE) * sizeof(int);
+  heap_stats.size = (HEAP_SIZE) * WORD_SIZE;
   heap_stats.used = 0;
-  heap_stats.free = (HEAP_SIZE - 2) * sizeof(int);; 
+  heap_stats.free = (HEAP_SIZE - 2) * WORD_SIZE;
   return 0;   // replace
 }
 
@@ -88,7 +90,7 @@ void* Heap_Malloc(int desiredBytes){
     return NULL;
   }
 
-  int numBlocks = (desiredBytes + 3) / 4; // number of 4 byte blocks needed
+  int numBlocks = (desiredBytes + WORD_SIZE - 1) / WORD_SIZE; // number of 4 byte blocks needed
   //make numBlocks even
   if(numBlocks % 2 != 0) {
     numBlocks++;
@@ -132,8 +134,8 @@ void* Heap_Malloc(int desiredBytes){
     // allocate the entire block
     heapPtr[index] = numBlocks;
     heapPtr[index + numBlocks + 1] = numBlocks;
-    heap_stats.free -= numBlocks * sizeof(int);
-    heap_stats.used += numBlocks * sizeof(int);
+    heap_stats.free -= numBlocks * WORD_SIZE;
+    heap_stats.used += numBlocks * WORD_SIZE;
 
 
   } else if(value > numBlocks) {
@@ -143,8 +145,8 @@ void* Heap_Malloc(int desiredBytes){
     heapPtr[index + numBlocks + 2] = (value - numBlocks - 2) * -1;
     heapPtr[index + value + 1] = (value - numBlocks - 2) * -1;
     
-    heap_stats.free -= numBlocks * sizeof(int) + 8;
-    heap_stats.used += numBlocks * sizeof(int);
+    heap_stats.free -= numBlocks * WORD_SIZE + 2 * WORD_SIZE;
+    heap_stats.used += numBlocks * WORD_SIZE;
 
   }
 
@@ -164,7 +166,7 @@ void* Heap_Malloc(int desiredBytes){
 //notes: the allocated memory block will be zeroed out
 void* Heap_Calloc(int desiredBytes){  
 
-  int numBlocks = (desiredBytes + 3) / 4; // number of 4 byte blocks needed
+  int numBlocks = (desiredBytes + WORD_SIZE - 1) / WORD_SIZE; // number of 4 byte blocks needed
 
   // Call Heap_Malloc to allocate the memory
   // If the allocation is successful, zero out the memory block
@@ -193,7 +195,7 @@ void* Heap_Calloc(int desiredBytes){
 //   are copied to a new block if growing/shrinking not possible
 void* Heap_Realloc(void* oldBlock, int desiredBytes){
 
-  int numBlocks = (desiredBytes + 3) / 4; // number of 4 byte blocks needed
+  int numBlocks = (desiredBytes + WORD_SIZE - 1) / WORD_SIZE; // number of 4 byte blocks needed
   
   // If the oldBlock is NULL, call Heap_Malloc to allocate a new block
   if(oldBlock == NULL) {
@@ -214,7 +216,7 @@ void* Heap_Realloc(void* oldBlock, int desiredBytes){
   unsigned int *heapPtr = &heap[0];
 
 	
-  int index = (((unsigned int)oldBlock - (unsigned int)heap) / 4) - 1;
+  int index = (((unsigned int)oldBlock - (unsigned int)heap) / WORD_SIZE) - 1;
   int oldBlockSize = heap[index];
   
   if(oldBlockSize == numBlocks) {
