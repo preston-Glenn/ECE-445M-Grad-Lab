@@ -22,7 +22,7 @@ int sys_fork(u64 stack)
 
 void sys_exit()
 {
-    OS_KillThread();
+    OS_Kill();
 }
 
 void sys_call_table_relocate()

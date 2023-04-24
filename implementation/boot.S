@@ -566,7 +566,7 @@ el0_da:
 
 .globl ret_from_fork
 ret_from_fork:
-    bl preempt_enable
+    //bl preempt_enable
     /* x19 == 0 means we're cloning */
     cbz x19, ret_to_user
     mov x0, x20
