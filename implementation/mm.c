@@ -192,3 +192,12 @@ int do_data_abort(u64 far, u64 esr)
     }
     return -1;
 }
+
+/* bytes is round down to the nearest 8 */
+void memcpy(u64* dst, u64* src, u64 bytes)
+{
+    u64 num = bytes >> 3;
+    for (u64 i = 0; i < num; i++) {
+        dst[i] = src[i];
+    }
+}

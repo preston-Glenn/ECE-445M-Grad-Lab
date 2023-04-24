@@ -73,6 +73,8 @@ u64 get_kernel_page();
 void free_kernel_page(u64 kp);
 u64 get_free_page();
 void free_page(u64 p);
+void memcpy(u64* dst, u64* src, u64 bytes);
+
 
 extern u64 _start;
 #define KERNEL_START (&(_start))
