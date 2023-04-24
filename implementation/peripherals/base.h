@@ -1,6 +1,9 @@
-#ifndef	_P_BASE_H
-#define	_P_BASE_H
+#ifndef BASE_H
+#define BASE_H
 
-#define PBASE 0x3F000000
+#include "mm.h"
 
-#endif  /*_P_BASE_H */
+#define DEVICE_BASE  0xFE000000
+#define PBASE        PA_TO_KVA(DEVICE_BASE)
+
+#endif /* BASE_H */

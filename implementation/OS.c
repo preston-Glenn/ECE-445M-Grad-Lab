@@ -276,6 +276,10 @@ void OS_Init(){
     uart_init();
     fb_init();
 
+    irq_init_vectors();
+    generic_timer_init();
+    enable_interrupt_gic(NS_PHYS_TIMER_IRQ, id);
+
     // other initializations
     // TODO: make sure that we enable interrupts at StartOS
 }
