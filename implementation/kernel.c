@@ -169,19 +169,19 @@ void main(int id)
     //else drawString((WIDTH/2)-(strwidth/2), (HEIGHT/2)-(strheight/2), "Game over!", 0x04, zoom);
 
     // add threads
-   OS_AddThread(&counter, 1);
-    OS_AddThread(&counter7, 1);
-    OS_AddThread(&idle, 3);
-    //OS_AddProcess(&counter7, 0, 0, 1, 128, 1);
+//    OS_AddThread(&counter, 1);
+//     OS_AddThread(&counter7, 1);
+//     OS_AddThread(&idle, 3);
+//     //OS_AddProcess(&counter7, 0, 0, 1, 128, 1);
 
 
-    // delay
-    while(counts < 10000){
-        counts++;
-    }
+//     // delay
+//     while(counts < 10000){
+//         counts++;
+//     }
 
-    // start threads
-    OS_Launch();
+//     // start threads
+//     OS_Launch();
 
     // if we get here, something went wrong
     drawString((WIDTH/2)-(strwidth/2), (HEIGHT/2)-(strheight/2), "FAILED", 0x02, zoom);
